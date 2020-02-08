@@ -47,8 +47,10 @@ function addColorToList(hex) {
 
 function getColors() {
   const hex = localStorage.getItem("hex");
-  setColors(hex);
-  addColorToList(hex);
+  if(hex){
+    setColors(hex);
+    addColorToList(hex);
+  }
 }
 
 document.onload = getColors();
