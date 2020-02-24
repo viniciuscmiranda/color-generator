@@ -8,6 +8,7 @@
   margin: 0;  
   padding: 0;
   box-sizing: border-box;
+  outline-color: none;
 }
 
 #gen-color{
@@ -26,7 +27,6 @@
   border-radius: 16px;
 
   cursor: pointer;
-  outline: none;
 
   display: flex;
   flex-direction: column;
@@ -85,7 +85,6 @@
   border-radius: 50%;
 
   cursor: pointer;
-  outline: none;
   transition: all .1s ease;
 }
 

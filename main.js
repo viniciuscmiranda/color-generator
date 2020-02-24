@@ -1,21 +1,22 @@
 const maxColorListSize = 5;
+const colors = getInitial();
 
 function genColor() {
   //const hex = '#' + Math.random().toString(16).slice(2, 8);
   const min = 50;
   const max = 200; //0 < max < 255
 
-  const r = parseInt(Math.random() * (max - min)) + min;
-  const g = parseInt(Math.random() * (max - min)) + min;
-  const b = parseInt(Math.random() * (max - min)) + min;
+  const getNumber = () => parseInt(Math.random() * (max - min)) + min;
+  const toHex = n => ("0" + n.toString(16)).slice(-2)
 
-  const hexr = ("0" + r.toString(16)).slice(-2);
-  const hexg = ("0" + g.toString(16)).slice(-2);
-  const hexb = ("0" + b.toString(16)).slice(-2);
-  const hex = `#${hexr}${hexg}${hexb}`;
+  const r = toHex(getNumber());
+  const g = toHex(getNumber());
+  const b = toHex(getNumber());
+  const hex = "#" + r + g + b;
 
   setColors(hex);
   addColorToList(hex);
+  saveColor(hex);
 }
 
 function setColors(hex) {
@@ -23,8 +24,12 @@ function setColors(hex) {
   document.querySelector("#gen-color").style.color = hex;
   document.querySelector("#hex-code").innerHTML = hex;
   document.title = hex.toUpperCase();
+}
 
-  localStorage.setItem("hex", hex);
+function saveColor(hex) {
+  if (colors.length === maxColorListSize) colors.shift();
+  colors.push(hex);
+  localStorage.setItem("colors", colors.join());
 }
 
 function addColorToList(hex) {
@@ -46,11 +51,18 @@ function addColorToList(hex) {
 }
 
 function getColors() {
-  const hex = localStorage.getItem("hex");
-  if (hex) {
-    setColors(hex);
-    addColorToList(hex);
+  let colors = localStorage.getItem("colors");
+  if (colors) {
+    colors = colors.split(',');
+    colors.forEach(color => addColorToList(color));
+    setColors(colors.slice(-1)[0]);
   }
+}
+
+function getInitial() {
+  let colors = localStorage.getItem("colors");
+  if (colors) return colors.split(',');
+  else return [];
 }
 
 document.onload = getColors();
